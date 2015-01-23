@@ -15,9 +15,13 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var cityDisplay: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let font = UIFont(name: "AppleSDGothicNeo-Light", size: 32.0)
+        weatherDisplay.font = font
+        cityDisplay.font = font
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "foreGroundNotification:", name:"WillEnterForeground", object: nil)
         loadDataForUI()
     }
@@ -27,6 +31,7 @@ class ViewController: UIViewController {
     }
     
     func foreGroundNotification(notification: NSNotification) {
+        self.activityIndicator.hidden = false
         loadDataForUI()
     }
     
@@ -44,6 +49,7 @@ class ViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.cityDisplay.text = city
                     self.weatherDisplay.text = temp
+                    self.activityIndicator.hidden = true
                 }
             } else {
                 NSLog("Error occurred")
