@@ -15,10 +15,24 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var cityDisplay: UILabel!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "foreGroundNotification:", name:"WillEnterForeground", object: nil)
+        loadDataForUI()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    func foreGroundNotification(notification: NSNotification) {
+        loadDataForUI()
+    }
+    
+    func loadDataForUI() {
+        NSLog("Updating data!")
         let url = NSURL(string: "http://api.openweathermap.org/data/2.5/weather?q=Helsinki,fi&units=metric")
-        
         NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             if (error == nil) {
                 let weatherData = parseJson(data)
@@ -37,12 +51,7 @@ class ViewController: UIViewController {
                 println(response)
             }
             
-        }.resume()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+            }.resume()
     }
     
 }
