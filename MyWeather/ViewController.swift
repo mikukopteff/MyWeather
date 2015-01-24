@@ -40,16 +40,17 @@ class ViewController: UIViewController {
         let url = NSURL(string: "http://api.openweathermap.org/data/2.5/weather?q=Helsinki,fi&units=metric")
         NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             if (error == nil) {
-                let weatherData = parseJson(data)
-                println(weatherData)
-                let city = weatherData["name"] as String
-                let temp = String(format:"%.1f", weatherData["main"]!["temp"] as Double)
-                NSLog(city)
-                NSLog(temp)
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.cityDisplay.text = city
-                    self.weatherDisplay.text = temp
-                    self.activityIndicator.hidden = true
+                if let weatherData = parseJson(data) {
+                    println(weatherData)
+                    let city = weatherData["name"] as String
+                    let temp = String(format:"%.1f", weatherData["main"]!["temp"] as Double)
+                    NSLog(city)
+                    NSLog(temp)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.cityDisplay.text = city
+                        self.weatherDisplay.text = temp
+                        self.activityIndicator.hidden = true
+                    }
                 }
             } else {
                 NSLog("Error occurred")
@@ -62,13 +63,13 @@ class ViewController: UIViewController {
     
 }
 
-func parseJson(jsonData: NSData) -> NSDictionary {
+func parseJson(jsonData: NSData) -> NSDictionary? {
     var error: NSError?
     let jsonDict = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as NSDictionary
     if (error == nil) {
         return jsonDict
     } else {
-        return NSDictionary()
+        return nil
     }
 }
 
