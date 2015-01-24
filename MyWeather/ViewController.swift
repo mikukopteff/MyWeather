@@ -48,7 +48,7 @@ class ViewController: UIViewController {
                     NSLog(temp)
                     dispatch_async(dispatch_get_main_queue()) {
                         self.cityDisplay.text = city
-                        self.weatherDisplay.text = temp
+                        self.weatherDisplay.text = temp + "°C"
                         self.activityIndicator.hidden = true
                     }
                 }
