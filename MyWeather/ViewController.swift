@@ -25,9 +25,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let font = UIFont(name: "AppleSDGothicNeo-Light", size: 32.0)
-        //weatherDisplay.font = font
-        //cityDisplay.font = font
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "foreGroundNotification:", name:"WillEnterForeground", object: nil)
         loadDataForUI()
     }
@@ -48,14 +45,7 @@ class ViewController: UIViewController {
             if (error == nil) {
                 if let weatherData = parseJson(data) {
                     let weather = mapWeatherDataToStruct(weatherData)
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.cityDisplay.text = weather.city
-                        self.weatherDisplay.text = weather.temp + "°C"
-                        self.activityIndicator.hidden = true
-                        self.descriptionDisplay.text = weather.description.capitalizedString
-                        self.windDirectionDisplay.text = weather.windDirection + "°"
-                        self.windSpeedDisplay.text = weather.windSpeed + " m/s"
-                    }
+                    self.addWeatherToUI(weather)
                 }
             } else {
                 NSLog("Error occurred")
@@ -64,6 +54,18 @@ class ViewController: UIViewController {
             }
             
             }.resume()
+    }
+    
+    func addWeatherToUI(weather: Weather) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.cityDisplay.text = weather.city
+            self.weatherDisplay.text = weather.temp + "°C"
+            self.activityIndicator.hidden = true
+            self.descriptionDisplay.text = weather.description.capitalizedString
+            self.windDirectionDisplay.text = weather.windDirection + "°"
+            self.windSpeedDisplay.text = weather.windSpeed + " m/s"
+        }
+        
     }
     
 }
