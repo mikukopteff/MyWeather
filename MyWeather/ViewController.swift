@@ -17,11 +17,17 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var descriptionDisplay: UILabel!
+    
+    @IBOutlet weak var windDirectionDisplay: UILabel!
+    
+    @IBOutlet weak var windSpeedDisplay: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let font = UIFont(name: "AppleSDGothicNeo-Light", size: 32.0)
-        weatherDisplay.font = font
-        cityDisplay.font = font
+        //weatherDisplay.font = font
+        //cityDisplay.font = font
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "foreGroundNotification:", name:"WillEnterForeground", object: nil)
         loadDataForUI()
     }
@@ -41,15 +47,14 @@ class ViewController: UIViewController {
         NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             if (error == nil) {
                 if let weatherData = parseJson(data) {
-                    println(weatherData)
-                    let city = weatherData["name"] as String
-                    let temp = String(format:"%.1f", weatherData["main"]!["temp"] as Double)
-                    NSLog(city)
-                    NSLog(temp)
+                    let weather = mapWeatherDataToStruct(weatherData)
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.cityDisplay.text = city
-                        self.weatherDisplay.text = temp + "°C"
+                        self.cityDisplay.text = weather.city
+                        self.weatherDisplay.text = weather.temp + "°C"
                         self.activityIndicator.hidden = true
+                        self.descriptionDisplay.text = weather.description.capitalizedString
+                        self.windDirectionDisplay.text = weather.windDirection + "°"
+                        self.windSpeedDisplay.text = weather.windSpeed + " m/s"
                     }
                 }
             } else {
@@ -63,13 +68,42 @@ class ViewController: UIViewController {
     
 }
 
+func mapWeatherDataToStruct (weatherData: NSDictionary) -> Weather {
+    let city = weatherData["name"] as String
+    let temp = String(format:"%.1f", weatherData["main"]!["temp"] as Double)
+    let desc = weatherData["weather"]![0]["description"]! as String
+    let windDir = String(format:"%.1f", weatherData["wind"]!["deg"] as Double)
+    let windSpeed = String(format:"%.1f", weatherData["wind"]!["speed"] as Double)
+    NSLog(city)
+    NSLog(temp)
+    NSLog(desc)
+    NSLog(windDir)
+    NSLog(windSpeed)
+    return  Weather(city: city,temp: temp, description: desc, windDirection: windDir, windSpeed: windSpeed)
+}
+
 func parseJson(jsonData: NSData) -> NSDictionary? {
     var error: NSError?
     let jsonDict = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as NSDictionary
     if (error == nil) {
+        println(jsonDict)
         return jsonDict
     } else {
         return nil
+    }
+}
+struct Weather {
+    let city: String
+    let temp: String
+    let description: String
+    let windDirection: String
+    let windSpeed: String
+    init(city: String, temp: String, description: String, windDirection: String, windSpeed: String) {
+        self.city = city
+        self.temp = temp
+        self.description = description
+        self.windDirection = windDirection
+        self.windSpeed = windSpeed
     }
 }
 
