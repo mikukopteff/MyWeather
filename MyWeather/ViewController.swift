@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import MapKit
 
 class ViewController: UIViewController {
 
@@ -25,6 +26,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var windTextDisplay: UILabel!
     
+    let location = Location()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "bg_small.jpg")!)
@@ -35,23 +38,23 @@ class ViewController: UIViewController {
         self.windDirectionDisplay.backgroundColor = commonBackground()
         self.windSpeedDisplay.backgroundColor = commonBackground()
         self.windTextDisplay.backgroundColor = commonBackground()
-        loadDataForUI()
+        location.callback(locationCallback)
     }
     
-    func commonBackground() -> UIColor { return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.7)}
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    func locationCallback(location: CLLocation) -> Void {
+        loadDataForUI(location)
     }
+    
+    func commonBackground() -> UIColor { return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)}
     
     func foreGroundNotification(notification: NSNotification) {
         self.activityIndicator.hidden = false
-        loadDataForUI()
+        loadDataForUI(location.cache()!)
     }
     
-    func loadDataForUI() {
+    func loadDataForUI(location: CLLocation) -> Void {
         NSLog("Updating data!")
-        let url = NSURL(string: "http://api.openweathermap.org/data/2.5/weather?q=Helsinki,fi&units=metric")
+        let url = NSURL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&units=metric")
         NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             if (error == nil) {
                 if let weatherData = parseJson(data) {
@@ -76,9 +79,11 @@ class ViewController: UIViewController {
             self.windDirectionDisplay.text = weather.windDirection + "°"
             self.windSpeedDisplay.text = weather.windSpeed + " m/s"
         }
-        
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
 }
 
 func mapWeatherDataToStruct (weatherData: NSDictionary) -> Weather {
@@ -105,6 +110,7 @@ func parseJson(jsonData: NSData) -> NSDictionary? {
         return nil
     }
 }
+
 struct Weather {
     let city: String
     let temp: String
