@@ -15,6 +15,7 @@
 		2F8A2CBD1A724202000A15EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F8A2CBC1A724202000A15EB /* Images.xcassets */; };
 		2F8A2CC01A724202000A15EB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F8A2CBE1A724202000A15EB /* LaunchScreen.xib */; };
 		2F8A2CCC1A724202000A15EB /* MyWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8A2CCB1A724202000A15EB /* MyWeatherTests.swift */; };
+		2FBD52AA1A7652E500F807CE /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBD52A91A7652E500F807CE /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		2F8A2CC51A724202000A15EB /* MyWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F8A2CCA1A724202000A15EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F8A2CCB1A724202000A15EB /* MyWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWeatherTests.swift; sourceTree = "<group>"; };
+		2FBD52A91A7652E500F807CE /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				2F8A2CBE1A724202000A15EB /* LaunchScreen.xib */,
 				2F8A2CB41A724202000A15EB /* MyWeather.xcdatamodeld */,
 				2F8A2CB01A724202000A15EB /* Supporting Files */,
+				2FBD52A91A7652E500F807CE /* Location.swift */,
 			);
 			path = MyWeather;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			files = (
 				2F8A2CB81A724202000A15EB /* ViewController.swift in Sources */,
 				2F8A2CB61A724202000A15EB /* MyWeather.xcdatamodeld in Sources */,
+				2FBD52AA1A7652E500F807CE /* Location.swift in Sources */,
 				2F8A2CB31A724202000A15EB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

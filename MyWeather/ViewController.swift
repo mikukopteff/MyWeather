@@ -23,12 +23,22 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var windSpeedDisplay: UILabel!
     
+    @IBOutlet weak var windTextDisplay: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "bg_small.jpg")!)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "foreGroundNotification:", name:"WillEnterForeground", object: nil)
+        self.cityDisplay.backgroundColor = commonBackground()
+        self.weatherDisplay.backgroundColor = commonBackground()
+        self.descriptionDisplay.backgroundColor = commonBackground()
+        self.windDirectionDisplay.backgroundColor = commonBackground()
+        self.windSpeedDisplay.backgroundColor = commonBackground()
+        self.windTextDisplay.backgroundColor = commonBackground()
         loadDataForUI()
     }
+    
+    func commonBackground() -> UIColor { return UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.7)}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
